@@ -217,25 +217,22 @@ $$u^{(l+1)} = \frac{\mu_A}{K v^{(l)}}, \quad v^{(l+1)} = \frac{\mu_B}{K^T u^{(l+
 
 
 graph TD
-    subgraph Inputs [Входные данные]
-        A[COST_MATRIX<br>Семантические оси] -->|Расчет ядра K| C(Алгоритм Синхорна)
-        B[POSITIONS<br>Профили акторов: USA, RUS, EU, CHN] -->|Распределение масс| C
+    subgraph Inputs ["Входные данные (Inputs)"]
+        A["COST_MATRIX (Семантические оси)"] -->|Расчет ядра K| C("Алгоритм Синхорна")
+        B["POSITIONS (Профили акторов)"] -->|Распределение масс mu| C
     end
 
-    subgraph Kernel [Вычислительное ядро JAX / XLA]
-        C -->|jax.lax.fori_loop<br>100 итераций| D[Оптимальный план трансфера P]
-        D -->|Скалярное произведение P * C| E[Дистанция Вассерштейна]
+    subgraph Kernel ["Вычислительное ядро (JAX / XLA)"]
+        C -->|jax.lax.fori_loop| D["Оптимальный план P"]
+        D -->|Скалярное произведение P * C| E["Дистанция Вассерштейна"]
     end
 
-    subgraph Outputs [Результат]
-        E --> F[Full dist_matrix]
-        F --> G[Тепловая карта Matplotlib]
+    subgraph Outputs ["Результат (Outputs)"]
+        E --> F["Матрица dist_matrix"]
+        F --> G["Тепловая карта Matplotlib"]
     end
 
     style C fill:#6a1b9a,stroke:#333,stroke-width:2px,color:#fff
     style D fill:#283593,stroke:#333,stroke-width:2px,color:#fff
     style G fill:#2e7d32,stroke:#333,stroke-width:2px,color:#fff
-
-
-
 
