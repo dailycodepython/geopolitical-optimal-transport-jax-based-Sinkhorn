@@ -216,19 +216,18 @@ $$u^{(l+1)} = \frac{\mu_A}{K v^{(l)}}, \quad v^{(l+1)} = \frac{\mu_B}{K^T u^{(l+
 *   **Симметризация матрицы через инвариант суверенитета:** В цикле расчета итоговой матрицы расстояние `dist_matrix[i][j]` вычисляется только для разных акторов. Конструкция `if i == j: dist = 0.0` жестко задает рефлексивность метрики. Суверен находится в идеальном балансе со своими собственными интересами, что служит математической точкой отсчета для всей системы координат.
 
 
-mermaid
 graph TD
-    subgraph Входные данные (Inputs)
-        A[COST_MATRIX<br>Семантические оси] -->|Расчет ядра K = exp -C/reg| C(Алгоритм Синхорна)
-        B[POSITIONS<br>Профили акторов: USA, RUS, EU, CHN] -->|Распределение масс mu_A, mu_B| C
+    subgraph Inputs [Входные данные]
+        A[COST_MATRIX<br>Семантические оси] -->|Расчет ядра K| C(Алгоритм Синхорна)
+        B[POSITIONS<br>Профили акторов: USA, RUS, EU, CHN] -->|Распределение масс| C
     end
 
-    subgraph Вычислительное ядро (JAX / XLA)
+    subgraph Kernel [Вычислительное ядро JAX / XLA]
         C -->|jax.lax.fori_loop<br>100 итераций| D[Оптимальный план трансфера P]
         D -->|Скалярное произведение P * C| E[Дистанция Вассерштейна]
     end
 
-    subgraph Результат (Outputs)
+    subgraph Outputs [Результат]
         E --> F[Full dist_matrix]
         F --> G[Тепловая карта Matplotlib]
     end
@@ -236,6 +235,7 @@ graph TD
     style C fill:#6a1b9a,stroke:#333,stroke-width:2px,color:#fff
     style D fill:#283593,stroke:#333,stroke-width:2px,color:#fff
     style G fill:#2e7d32,stroke:#333,stroke-width:2px,color:#fff
+
 
 
 
